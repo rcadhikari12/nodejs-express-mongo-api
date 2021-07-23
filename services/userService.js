@@ -6,6 +6,8 @@ let Response = require('../models/responseModel')
 let Product = require('../models/productModel')
 
 
+
+//users
 module.exports.getAllUsers = (req, res, next) => {
 
     User.find((err, users) => {
@@ -97,14 +99,151 @@ module.exports.addNewProduct = (req, res) => {
 
 }
 
-module.exports.getAllProducts = (req, res, next) => {
 
-    Products.find((err, products) => {
+
+module.exports.getProductById = function (req, res, next) {
+    Product.findById(req.params.PRODUCT_ID, (err, product) => {
         if (err) throw err;
-        res.send(products);
-        console.log("hello");
-        console.log("ok");
+        if (!product) return res.status(404).send('Product doesnt exist with this Id.');
+
+        let responseProduct = {};
+        responseProduct.status = "success";
+        responseProduct.product = product;
+        res.send(responseProduct);
+    });
+};
+
+
+module.exports.deleteProductById = (req, res) => {
+    Product.findByIdAndRemove(req.params.id, (err) => {
+        if (err) throw err;
+
+        let response = new Response();
+        response.status = "success";
+        response.message = "product deleted successfully";
+        res.send(response);
+
+
     })
 
 }
 
+
+module.exports.updateProduct = (req, res) => {
+
+    Product.findByIdAndUpdate(req.params.id, req.body, (err) => {
+        if (err) throw err;
+
+        let response = new Response();
+        response.status = "success";
+        response.message = "profile modified successfully";
+        res.send(response);
+
+
+    });
+
+};
+
+
+module.exports.getBannerImages = (req, res, next) => {
+
+    Product.find((err, products) => {
+        if (err) throw err;
+
+        let productList = [];
+
+        let counter = 0;
+        for (var i = products.length - 1; i >= 0; i--) {
+
+            productList[counter] = products[i];
+            counter++;
+
+            if (counter == 3) {
+                break;
+            }
+
+        }
+
+        let responseProduct = {};
+        responseProduct.status = "success";
+        responseProduct.products = productList;
+        res.send(responseProduct);
+    })
+
+}
+
+module.exports.getCategories = (req, res, next) => {
+
+    Product.find((err, products) => {
+        if (err) throw err;
+
+        let categoriesList = [];
+        let categoryNames = []
+
+        for (var i = 0; i < 20; i++) {
+            let index = Math.floor(Math.random() * (products.length - 1 - 0));
+
+            if (categoryNames.indexOf(products[index].category) === -1) {
+                categoryNames.push(products[index].category);
+                let categoryObj = {};
+                categoryObj.name = products[index].category;
+                categoriesList.push(categoryObj);
+            }
+
+            if (categoryNames.length >= 3) {
+                break;
+            }
+        }
+
+        let responseProduct = {};
+        responseProduct.status = "success";
+        responseProduct.categories = categoriesList;
+        res.send(responseProduct);
+    })
+
+}
+
+
+module.exports.getHomepageProducts = (req, res, next) => {
+
+    Product.find((err, products) => {
+        if (err) throw err;
+
+        let productList = [];
+        let categoryNames = []
+
+        for (var i = 0; i < 40; i++) {
+            let index = Math.floor(Math.random() * (products.length - 1 - 0));
+
+            if (categoryNames.indexOf(products[index].category) === -1) {
+                categoryNames.push(products[index].category);
+                console.log(products[index].category);
+                productList.push(products[index]);
+            }
+
+            if (categoryNames.length >= 8) {
+                break;
+            }
+        }
+
+        let responseProduct = {};
+        responseProduct.status = "success";
+        responseProduct.products = productList;
+        res.send(responseProduct);
+    })
+
+}
+
+module.exports.getAllProducts = (req, res, next) => {
+
+    Product.find((err, products) => {
+        if (err) throw err;
+
+        let responseProduct = {};
+        responseProduct.status = "success";
+        responseProduct.products = products;
+        res.send(responseProduct);
+
+    })
+
+}
