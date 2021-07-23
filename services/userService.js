@@ -103,6 +103,7 @@ module.exports.getAllProducts = (req, res, next) => {
         if (err) throw err;
         res.send(products);
         console.log("hello");
+        console.log("ok");
     })
 
 }
