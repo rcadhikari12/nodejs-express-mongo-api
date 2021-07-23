@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=>, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <div class="container">
+        <br />
+        <h2> Add New Bug</h2>
+        <br />
+
+        <form action="/bugs/save" method="POST">
+            <div class="mb-3">
+                <input type="text" class="form-control" name="title" placeholder="Bug Title" />
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" name="description" placeholder="Bug Description" />
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" name="assignee" placeholder="Bug Assignee" />
+            </div>
+
+            <div class="mb-3">
+                <input type="datetime-local" class="form-control" name="date" placeholder="Bug Issued Date" />
+            </div>
+
+            <input type="submit" class="btn btn-warning" value="Add" />
+            <input type="reset" class="btn btn-danger" value="Clear" />
+        </form>
+    </div>
+</body>
+
+</html>

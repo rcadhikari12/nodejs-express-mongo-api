@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <br />
+    <div class="container">
+        <a href="/bugs/create" class="btn btn-success" style="margin-bottom: 10px;"> Add New Bug</a>
+        <h2> Bugs List </h2>
+        <br />
+
+        <br />
+
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Bug Title</th>
+                    <th>Bug Description</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Assignee</th>
+                    <th>Left Over Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i<bugList.length; i++) { %>
+
+                    <tr>
+
+                        <td>
+                            <%= bugList[i].title %>
+                        </td>
+                        <td>
+                            <%= bugList[i].description %>
+                        </td>
+                        <td>
+                            <%= bugList[i].time %>
+                        </td>
+                        <td>
+                            <%= bugList[i].date %>
+                        </td>
+                        <td>
+                            <%= bugList[i].assignee %>
+                        </td>
+
+                        <td>
+                            <%= bugList[i].daysLeft %>
+                        </td>
+
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
