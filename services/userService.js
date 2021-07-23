@@ -102,6 +102,7 @@ module.exports.getAllProducts = (req, res, next) => {
     Products.find((err, products) => {
         if (err) throw err;
         res.send(products);
+        console.log("hello");
     })
 
 }
