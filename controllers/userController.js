@@ -19,7 +19,7 @@ router.delete('/api/v1/profile/image/:id', userService.deleteProfileImage);
 
 
 //address
-router.patch('/api/v1/profile/address/:id', userService.updateAddress); //pass only address objec: steet, city, state, zip
+router.patch('/api/v1/profile/address/:id', userService.updateAddress); //pass only address objec: {steet, city, state, zip}
 
 
 //products
@@ -34,11 +34,27 @@ router.delete('/api/v1/admin/products/:id', userService.deleteProductById);
 router.patch('/api/v1/admin/products/:id', userService.updateProduct); //pass the whole product obj
 
 
+//admin-orders
+router.get('/api/v1/admin/orders', userService.getAllOrders);
+router.delete('/api/v1/admin/orders/:id', userService.deleteOrderById);
+router.patch('/api/v1/orders/:id', userService.processOrder); //no need to pass body, only pass id to parameter
+
+
 //homepage-banner
 router.get('/api/v1/homepage/banner', userService.getBannerImages); //returns {status: "success", products:[]}
 
+
 //categories
 router.get('/api/v1/homepage/categories', userService.getCategories); //returns {status: "success", categories: []}
+
+
+//checkout
+router.post('/api/v1/checkout', userService.checkoutProduct);
+
+//orders
+router.get('/api/v1/orders/:user_id', userService.getOrdersUsers);
+
+
 
 
 

@@ -4,6 +4,7 @@ var mongoose = require('mongoose')
 var User = require('../models/userModel')
 let Response = require('../models/responseModel')
 let Product = require('../models/productModel')
+let Order = require('../models/orderModel')
 
 
 
@@ -155,7 +156,11 @@ module.exports.getBannerImages = (req, res, next) => {
         let counter = 0;
         for (var i = products.length - 1; i >= 0; i--) {
 
-            productList[counter] = products[i];
+            productObj = {}
+            productObj.image = products[i].image;
+            productObj.name = products[i].name;
+            productObj.created_on = products[i].created_on;
+            productList[counter] = productObj;
             counter++;
 
             if (counter == 3) {
@@ -163,6 +168,7 @@ module.exports.getBannerImages = (req, res, next) => {
             }
 
         }
+
 
         let responseProduct = {};
         responseProduct.status = "success";
@@ -247,3 +253,118 @@ module.exports.getAllProducts = (req, res, next) => {
     })
 
 }
+
+
+//checkout
+
+module.exports.checkoutProduct = (req, res) => {
+
+    let order = new Order();
+    userDetails = {};
+    User.findOne(({ email: req.body.email }), (err, user) => {
+        if (err) throw err;
+        if (!user) {
+            order.user = 'guest-user';
+            userDetails.firstName = req.body.firstName;
+            userDetails.lastName = req.body.lastName;
+            userDetails.email = req.body.email;
+            order.userDetails = userDetails;
+
+        }
+        else {
+            order.user = user.id;
+        }
+
+
+        order.orderPlacedOn = new Date();
+        order.orderDeliveredOn = null;
+        order.cart = req.body.cart;
+
+
+        Order.create(order, (err) => {
+            if (err) throw err;
+
+            let response = {};
+            response.status = "success";
+            response.message = "Order placed successfully";
+            res.send(response);
+        })
+
+
+    });
+}
+
+
+module.exports.getAllOrders = (req, res, next) => {
+
+    Order.find((err, orders) => {
+        if (err) throw err;
+
+        let responseOrder = {};
+        responseOrder.status = "success";
+        responseOrder.orders = orders;
+        res.send(responseOrder);
+
+    })
+
+}
+
+module.exports.getOrdersUsers = (req, res, next) => {
+
+    Order.find((err, orders) => {
+        if (err) throw err;
+
+        orderList = [];
+
+        for (var i = 0; i < orders.length; i++) {
+            if (orders[i].user === req.params.user_id) {
+                orderList.push(orders[i]);
+            }
+        }
+
+        let responseOrder = {};
+        responseOrder.status = "success";
+        responseOrder.orders = orderList;
+        res.send(responseOrder);
+
+    })
+
+}
+
+module.exports.deleteOrderById = (req, res) => {
+    Order.findByIdAndRemove(req.params.id, (err) => {
+        if (err) throw err;
+
+        let response = {};
+        response.status = "success";
+        response.message = "order deleted successfully";
+        res.send(response);
+
+
+    })
+
+}
+
+module.exports.processOrder = (req, res) => {
+
+
+    Order.findByIdAndUpdate(req.params.id, { isDelievered: true, orderDeliveredOn: new Date() }, (err) => {
+        if (err) throw err;
+
+        let response = {};
+        response.status = "success";
+        response.message = "order modified successfully";
+        res.send(response);
+
+
+    });
+
+};
+
+
+
+
+
+
+
+
