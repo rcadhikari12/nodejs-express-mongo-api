@@ -16,6 +16,7 @@ router.post('/api/v1/users/register', userService.registerUser);
 //profiles
 
 router.delete('/api/v1/profile/image/:id', userService.deleteProfileImage);
+router.get('/api/v1/profile/:id', userService.getUserById);
 
 
 //address
@@ -53,6 +54,7 @@ router.post('/api/v1/checkout', userService.checkoutProduct);
 
 //orders
 router.get('/api/v1/orders/:user_id', userService.getOrdersUsers);
+
 
 
 

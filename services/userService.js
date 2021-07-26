@@ -19,6 +19,15 @@ module.exports.getAllUsers = (req, res, next) => {
 }
 
 
+module.exports.getUserById = function (req, res, next) {
+    User.findById(req.params.id, (err, user) => {
+        if (err) throw err;
+        if (!user) return res.status(404).send('user doesnt exist with this Id.');
+        res.send({ status: "success", profile: user });
+    });
+};
+
+
 module.exports.registerUser = (req, res) => {
     var user = new User(req.body);
     User.create(user, (err) => {
@@ -76,13 +85,6 @@ module.exports.updateAddress = (req, res) => {
 };
 
 
-module.exports.getUserById = function (req, res, next) {
-    User.findById(req.params.id, (err, user) => {
-        if (err) throw err;
-        if (!user) return res.status(404).send('user doesnt exist with this Id.');
-        res.send(user);
-    });
-};
 
 
 
@@ -360,6 +362,7 @@ module.exports.processOrder = (req, res) => {
     });
 
 };
+
 
 
 
