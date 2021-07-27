@@ -2,13 +2,25 @@
 
 var express = require('express');
 var router = express.Router();
+const { requireAuth } = require('../middlewares/authMiddleWare')
+
+
+
 
 var userService = require('../services/userService')
+let authService = require('../services/authService');
+
+
+//login
+router.post('/api/v1/users/login', authService.loginUser);
+
+//getLoggedInUser
+router.get('/api/v1/users/getLoggedUser', authService.getLoggedUser);
 
 
 //users
 
-router.get('/getAllUsers', userService.getAllUsers);
+router.get('/getAllUsers', requireAuth, userService.getAllUsers);
 router.get('/getUserById/:id', userService.getUserById);
 router.post('/api/v1/users/register', userService.registerUser);
 
@@ -54,8 +66,6 @@ router.post('/api/v1/checkout', userService.checkoutProduct);
 
 //orders
 router.get('/api/v1/orders/:user_id', userService.getOrdersUsers);
-
-
 
 
 

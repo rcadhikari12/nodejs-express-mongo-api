@@ -18,7 +18,6 @@ module.exports.getAllUsers = (req, res, next) => {
 
 }
 
-
 module.exports.getUserById = function (req, res, next) {
     User.findById(req.params.id, (err, user) => {
         if (err) throw err;
