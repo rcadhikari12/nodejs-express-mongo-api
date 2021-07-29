@@ -21,7 +21,7 @@ router.get('/api/v1/users/getLoggedUser', requireAuth, authService.getLoggedUser
 //admin-users
 router.get('/getAllUsers', requireAuth, userService.getAllUsers);
 router.delete('/api/v1/admin/users/:id', requireAuth, userService.deleteUser);
-router.delete('/api/v1/admin/users/add-user', requireAuth, userService.addUser);
+router.post('/api/v1/admin/users/add-user', requireAuth, userService.addUser);
 
 
 
