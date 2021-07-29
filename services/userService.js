@@ -18,6 +18,35 @@ module.exports.getAllUsers = (req, res, next) => {
 
 }
 
+
+module.exports.deleteUser = (req, res) => {
+    User.findByIdAndRemove(req.params.id, (err) => {
+        if (err) throw err;
+
+        let response = new Response();
+        response.status = "success";
+        response.message = "user deleted successfully";
+        res.send(response);
+
+
+    })
+
+}
+
+
+module.exports.addUser = (req, res) => {
+    var user = new User(req.body);
+    User.create(user, (err) => {
+        if (err) throw err;
+
+        let response = new Response();
+        response.status = "success";
+        response.message = "User created successfully";
+        res.send(response);
+    })
+
+}
+
 module.exports.getUserById = function (req, res, next) {
     User.findById(req.params.id, (err, user) => {
         if (err) throw err;

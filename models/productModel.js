@@ -10,10 +10,14 @@ let productSchema = mongoose.Schema({
     discountPrice: Number,
     description: String,
     image: String,
+    qty: Number,
     created_on: { type: Date, default: Date.now },
     isTopProduct: Boolean
 
 });
 
 
+
+
 module.exports = mongoose.model('Product', productSchema);
+

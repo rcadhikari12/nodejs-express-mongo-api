@@ -9,6 +9,7 @@ let userSchema = mongoose.Schema({
     password: String,
     email: String,
     profileImage: String,
+    role: { type: String, default: 'USER' },
 
     address: {
         streetAddress: { type: String, default: '' },

@@ -5,8 +5,6 @@ var router = express.Router();
 const { requireAuth } = require('../middlewares/authMiddleWare')
 
 
-
-
 var userService = require('../services/userService')
 let authService = require('../services/authService');
 
@@ -14,25 +12,31 @@ let authService = require('../services/authService');
 //login
 router.post('/api/v1/users/login', authService.loginUser);
 
+
+
 //getLoggedInUser
-router.get('/api/v1/users/getLoggedUser', authService.getLoggedUser);
+router.get('/api/v1/users/getLoggedUser', requireAuth, authService.getLoggedUser);
+
+
+//admin-users
+router.get('/getAllUsers', requireAuth, userService.getAllUsers);
+router.delete('/api/v1/admin/users/:id', requireAuth, userService.deleteUser);
+router.delete('/api/v1/admin/users/add-user', requireAuth, userService.addUser);
+
 
 
 //users
-
-router.get('/getAllUsers', requireAuth, userService.getAllUsers);
-router.get('/getUserById/:id', userService.getUserById);
+router.get('/getUserById/:id', requireAuth, userService.getUserById);
 router.post('/api/v1/users/register', userService.registerUser);
 
 
 //profiles
-
-router.delete('/api/v1/profile/image/:id', userService.deleteProfileImage);
-router.get('/api/v1/profile/:id', userService.getUserById);
+router.delete('/api/v1/profile/image/:id', requireAuth, userService.deleteProfileImage);
+router.get('/api/v1/profile/:id', requireAuth, userService.getUserById);
 
 
 //address
-router.patch('/api/v1/profile/address/:id', userService.updateAddress); //pass only address objec: {steet, city, state, zip}
+router.patch('/api/v1/profile/address/:id', requireAuth, userService.updateAddress); //pass only address objec: {steet, city, state, zip}
 
 
 //products
@@ -42,15 +46,15 @@ router.get('/api/v1/products', userService.getAllProducts); //returns {status: "
 
 
 //admin-products
-router.post('/admin/add-new-product', userService.addNewProduct);
-router.delete('/api/v1/admin/products/:id', userService.deleteProductById);
-router.patch('/api/v1/admin/products/:id', userService.updateProduct); //pass the whole product obj
+router.post('/admin/add-new-product', requireAuth, userService.addNewProduct);
+router.delete('/api/v1/admin/products/:id', requireAuth, userService.deleteProductById);
+router.patch('/api/v1/admin/products/:id', requireAuth, userService.updateProduct); //pass the whole product obj
 
 
 //admin-orders
-router.get('/api/v1/admin/orders', userService.getAllOrders);
-router.delete('/api/v1/admin/orders/:id', userService.deleteOrderById);
-router.patch('/api/v1/orders/:id', userService.processOrder); //no need to pass body, only pass id to parameter
+router.get('/api/v1/admin/orders', requireAuth, userService.getAllOrders);
+router.delete('/api/v1/admin/orders/:id', requireAuth, userService.deleteOrderById);
+router.patch('/api/v1/orders/:id', requireAuth, userService.processOrder); //no need to pass body, only pass id to parameter
 
 
 //homepage-banner
@@ -65,7 +69,7 @@ router.get('/api/v1/homepage/categories', userService.getCategories); //returns 
 router.post('/api/v1/checkout', userService.checkoutProduct);
 
 //orders
-router.get('/api/v1/orders/:user_id', userService.getOrdersUsers);
+router.get('/api/v1/orders/:user_id', requireAuth, userService.getOrdersUsers);
 
 
 
